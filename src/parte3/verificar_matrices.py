@@ -199,6 +199,44 @@ def registrar_resultado(
 
 # VERIFICACION DE MATRICES
 if __name__ == "__main__":
+    
+    # PRUEBA CON MATRIZ PEQUENA
+    print("=== PRUEBA CON MATRIZ PEQUENA ===")
+
+    X_pequena = np.array([
+        [0.0],
+        [1.0],
+        [10.0],
+        [11.0]
+    ])
+
+    k_pequena = 2
+
+    S_pequena = matriz_knn(X_pequena, k_pequena)
+
+    S_esperada = np.array([
+        [0.5, 0.5, 0.0, 0.0],
+        [0.5, 0.5, 0.0, 0.0],
+        [0.0, 0.0, 0.5, 0.5],
+        [0.0, 0.0, 0.5, 0.5]
+    ])
+
+    print("\nMatriz S calculada:")
+    print(S_pequena)
+
+    print("\nMatriz S esperada:")
+    print(S_esperada)
+
+    traza = np.trace(S_pequena)
+    formula = df_knn(len(X_pequena), k_pequena)
+
+    print(f"\nTraza de S: {traza:.4f}")
+    print(f"Formula n/k: {formula:.4f}")
+
+    assert np.allclose(S_pequena, S_esperada)
+    assert np.isclose(traza, formula)
+
+    print("\nPrueba con matriz pequena correcta.")
 
     datos = cargar_wine()
 

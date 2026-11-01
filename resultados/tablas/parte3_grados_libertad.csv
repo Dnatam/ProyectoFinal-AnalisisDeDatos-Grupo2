@@ -1,0 +1,23 @@
+modelo,hiperparametro,valor,grados_libertad
+OLS,ninguno,N/A,12.0
+Ridge,alpha,0.1,11.997364547344098
+Ridge,alpha,1,11.973821149285456
+Ridge,alpha,10,11.754023604305779
+Ridge,alpha,100,10.328551176476548
+Ridge,alpha,1000,6.139276976790393
+k-NN,k,1,1279.0
+k-NN,k,5,255.8
+k-NN,k,10,127.9
+k-NN,k,30,42.63333333333333
+k-NN,k,50,25.58
+k-NN,k,100,12.79
+Arbol,max_depth,2,4.0
+Arbol,max_depth,4,15.0
+Arbol,max_depth,6,50.0
+Arbol,max_depth,8,131.0
+Arbol,max_depth,10,213.0
+Random Forest,min_samples_leaf,1,434.74000000000024
+Random Forest,min_samples_leaf,5,191.6199999999998
+Random Forest,min_samples_leaf,10,98.94499999999992
+Random Forest,min_samples_leaf,20,49.06499999999998
+Random Forest,min_samples_leaf,50,19.494999999999983

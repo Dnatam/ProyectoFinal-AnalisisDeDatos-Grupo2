@@ -55,6 +55,14 @@ En los árboles, la referencia calculada usando $\operatorname{tr}(S)$ igual al 
 
 El árbol de profundidad 10 mostró el mayor optimismo (0.460840), consistente con una mayor capacidad para adaptarse al ruido de entrenamiento. Los resultados evidencian que el error de entrenamiento por sí solo no refleja el costo de esa flexibilidad.
 
+### Alcance y limitaciones de la simulación
+
+La simulación reproduce un escenario de diseño fijo, en el que se mantienen los mismos predictores y se generan nuevas respuestas independientes. Por lo tanto, el optimismo estimado no equivale directamente al error de generalización sobre nuevas observaciones con valores diferentes de las variables predictoras.
+
+Aunque la escala del ruido se obtuvo a partir del error OOB de un Random Forest de referencia, una vez fijada la varianza \(\hat{\sigma}^2\), esta constituye la varianza conocida del ruido generado artificialmente en el experimento.
+
+Las diferencias observadas en los árboles son consistentes con el efecto de seleccionar adaptativamente las particiones, pero no deben interpretarse como una medición exacta y aislada del costo de seleccionar los cortes. Los resultados corresponden a 50 réplicas de un escenario simulado específico y no representan una conclusión universal para todos los árboles o conjuntos de datos.
+
 ## Archivos para reproducibilidad
 
 - `src/parte3/simulacion_optimismo.py`: generación de réplicas y ajuste de modelos.

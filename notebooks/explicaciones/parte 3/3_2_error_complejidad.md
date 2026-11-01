@@ -59,4 +59,10 @@ La figura presenta las cinco familias conjuntamente: línea continua para entren
 - Tabla completa: `resultados/tablas/parte3_error_complejidad.csv`.
 - Figura: `resultados/graficas/parte3_error_complejidad.png`.
 
-En el notebook, colocar la figura después de la tabla de resultados y antes de la interpretación. El experimento es descriptivo: no se ha elegido un modelo final usando el conjunto de prueba.
+Los resultados obtenidos permiten comparar el comportamiento de los modelos frente a distintos niveles de complejidad. La comparación se realizó utilizando la misma partición de entrenamiento y prueba, sin seleccionar un modelo final a partir de los errores observados en el conjunto de prueba.
+
+### Consideraciones sobre la evaluación de la complejidad
+
+Las curvas de error de entrenamiento y prueba permiten analizar cómo cambia la capacidad de generalización de los modelos al modificar sus hiperparámetros. Una disminución del error de entrenamiento no garantiza una mejora en el conjunto de prueba, ya que una mayor flexibilidad puede aumentar el riesgo de sobreajuste.
+
+Asimismo, en árboles de regresión y Random Forest, la traza de la matriz construida a partir de las particiones ajustadas describe su estructura de promedios, pero no representa necesariamente toda la complejidad adaptativa asociada a seleccionar dichas particiones. Por lo tanto, modelos con trazas similares pueden presentar errores de predicción diferentes.

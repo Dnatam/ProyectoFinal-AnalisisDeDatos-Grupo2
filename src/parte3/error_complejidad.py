@@ -116,7 +116,7 @@ def graficar_resultados(tabla, ruta):
         )
 
     plt.xscale("log")
-    plt.xlabel("Grados de libertad efectivos: tr(S)")
+    plt.xlabel("Complejidad estructural: tr(S)")
     plt.ylabel("Error cuadratico medio (MSE)")
     plt.title("Wine Quality - Error frente a complejidad")
     plt.grid(True, alpha=0.3)

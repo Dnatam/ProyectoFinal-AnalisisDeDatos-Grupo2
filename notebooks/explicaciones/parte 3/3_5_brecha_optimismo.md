@@ -19,6 +19,8 @@ $$
 
 No se espera igualdad numérica: la brecha real usa un conjunto de prueba con características distintas y una sola partición, mientras que Monte Carlo utiliza respuestas sintéticas con $X$ fijo y un promedio de 50 réplicas.
 
+Es importante señalar que la comparación también involucra dos mecanismos distintos de generación de respuestas. En el experimento con Wine Quality Red se utilizan las calificaciones observadas, mientras que en Monte Carlo las respuestas se generan artificialmente a partir de una función de referencia estimada y ruido gaussiano independiente. Por tanto, las diferencias entre ambas cantidades no pueden atribuirse exclusivamente al sobreajuste ni a la complejidad del modelo, ya que también intervienen las características de los datos y el diseño de evaluación.
+
 ## Resultados
 
 | Modelo | Brecha test/train real | Optimismo Monte Carlo | Diferencia (brecha − MC) |
@@ -48,4 +50,4 @@ Las barras de error de la figura corresponden **solo** al error estándar del pr
 
 ## Conclusión
 
-La brecha test/train observada y el optimismo de diseño fijo son conceptos relacionados, pero no intercambiables. Su comparación permite ilustrar la influencia del muestreo, la distribución de los puntos de prueba y la adaptabilidad del modelo.
+La brecha observada entre prueba y entrenamiento y el optimismo esperado bajo diseño fijo son cantidades relacionadas, pero no equivalentes. La primera corresponde a una partición particular de datos reales, mientras que el segundo se estima promediando resultados de simulaciones con respuestas independientes en los mismos predictores. Las diferencias observadas ilustran la importancia del diseño de evaluación, la variabilidad muestral y la adaptación de los modelos, sin permitir aislar cuantitativamente el efecto de cada factor.

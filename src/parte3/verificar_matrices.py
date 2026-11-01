@@ -409,3 +409,36 @@ if __name__ == "__main__":
     print(f"Total de verificaciones: {len(tabla)}")
 
     print("\nTodas las verificaciones fueron correctas.")
+    
+    arbol = DecisionTreeRegressor(
+        max_depth=6,
+        random_state=0
+    )
+    arbol.fit(X_train, y_train)
+    
+    # IDENTIFICAR LA HOJA DE CADA OBSERVACION
+    hojas = arbol.apply(X_train)
+    
+    # CONTAR CUANTAS OBSERVACIONES HAY EN CADA HOJA
+    _, indices, conteos = np.unique(
+        hojas,
+        return_inverse=True,
+        return_counts=True
+    )
+    
+    # CADA OBSERVACION SE ASIGNA UN PESO DE 1/TAMANO DE HOJA
+    votos_propios = 1.0 / conteos[indices]
+    
+    # LA SUMA DE LOS VOTOS PROPIOS ES LA TRAZA
+    traza_votos = np.sum(votos_propios)
+    numero_hojas = arbol.get_n_leaves()
+    
+    print("\n=== VERIFICACION DE VOTOS PROPIOS ===")
+    print(f"Observaciones: {len(X_train)}")
+    print(f"Numero de hojas: {numero_hojas}")
+    print(f"Suma de votos propios: {traza_votos:.6f}")
+    
+    assert np.isclose(traza_votos, numero_hojas)
+    
+    print("Verificacion correcta: tr(S) = numero de hojas")
+    

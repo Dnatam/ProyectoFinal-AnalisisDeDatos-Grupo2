@@ -15,6 +15,8 @@ Se evalúan tres errores cuadrados medios:
 
 El método OOB requiere bootstrap y no es equivalente a evaluar el bosque completo sobre test: cada predicción OOB agrega solo un subconjunto de árboles.
 
+En este experimento, el error OOB se utiliza como una estimación interna del desempeño predictivo fuera de muestra. Aunque cada observación se evalúa mediante árboles que no la incluyeron en su muestra bootstrap, las predicciones OOB no constituyen un conjunto de prueba completamente independiente del procedimiento de entrenamiento. Por ello, OOB resulta útil para comparar configuraciones sin recurrir continuamente al conjunto test, pero no sustituye necesariamente una evaluación final sobre datos reservados.
+
 ## Resultados
 
 | `min_samples_leaf` | MSE train | MSE OOB | MSE test | Brecha OOB − train | Brecha test − train |

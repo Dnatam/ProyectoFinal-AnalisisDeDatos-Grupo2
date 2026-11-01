@@ -123,6 +123,10 @@ $$
 \end{aligned}
 $$
 
+La identidad del optimismo expresada mediante covarianzas es válida para procedimientos de ajuste más generales, siempre que las nuevas respuestas sean independientes de los datos utilizados para entrenar el modelo. En cambio, su simplificación mediante la traza requiere que la matriz suavizadora sea fija respecto de las respuestas observadas, además de los supuestos de independencia y homocedasticidad.
+
+Por lo tanto, es importante distinguir entre la traza de una matriz construida después de ajustar un modelo y los grados de libertad efectivos del procedimiento completo. Esta diferencia resulta especialmente relevante para los árboles de regresión y Random Forest, cuyas particiones se seleccionan utilizando las respuestas de entrenamiento.
+
 ## Condiciones de validez e interpretación
 
 1. **Diseño fijo:** se comparan nuevas respuestas en los mismos $x_i$, no nuevos valores de $X$.
@@ -135,7 +139,7 @@ $$
 
 **k-NN:** con distancias, vecindarios y reglas de desempate determinados exclusivamente por $X$, también satisface la condición.
 
-**Árboles y Random Forest:** sus particiones se eligen según $y$. Aunque es posible construir una matriz $S$ *condicional a la partición aprendida*, esta matriz depende de $y$; por eso, $2\sigma^2\operatorname{tr}(S)/n$ no necesariamente coincide con el optimismo real del procedimiento completo.
+**Árboles y Random Forest:** sus particiones se seleccionan utilizando las respuestas de entrenamiento. Como se comprobó en el inciso 3.1, para un árbol ajustado la traza de su matriz suavizadora coincide con el número de hojas, mientras que para un bosque sin bootstrap coincide con el promedio del número de hojas de sus árboles. Sin embargo, estas igualdades describen las matrices correspondientes a las particiones aprendidas y no incorporan necesariamente toda la complejidad asociada a seleccionarlas. Por ello, la expresión \(2\sigma^2\operatorname{tr}(S)/n\) debe interpretarse como una referencia estructural y no como una fórmula exacta del optimismo para estos procedimientos adaptativos.
 
 ## Ejemplos con Wine ($n=1279$)
 

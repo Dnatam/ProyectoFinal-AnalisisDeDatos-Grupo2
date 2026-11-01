@@ -68,16 +68,17 @@ def registrar(
     mse_train,
     mse_new,
     grados_libertad,
-    sigma
+    sigma,
+    n_observaciones
 ):
     optimismo = mse_new - mse_train
 
     # Referencia de traza: exacta para suavizadores
     # fijos, no necesariamente para arboles adaptativos.
     optimismo_traza = (
-        2 * sigma**2 * grados_libertad / N_OBSERVACIONES
+        2 * sigma**2 * grados_libertad / n_observaciones
     )
-
+    
     registros.append({
         "repeticion": repeticion,
         "modelo": modelo,
@@ -171,7 +172,8 @@ if __name__ == "__main__":
                 mse_train,
                 mse_new,
                 df_knn_fijos[k],
-                sigma
+                sigma,
+                N_OBSERVACIONES
             )
 
         # RIDGE
@@ -188,7 +190,8 @@ if __name__ == "__main__":
             mean_squared_error(y_sim, pred),
             mean_squared_error(y_new, pred),
             df_ridge_fijo,
-            sigma
+            sigma,
+            N_OBSERVACIONES
         )
 
         # ARBOLES DE REGRESION
@@ -210,7 +213,8 @@ if __name__ == "__main__":
                 mean_squared_error(y_sim, pred),
                 mean_squared_error(y_new, pred),
                 modelo_arbol.get_n_leaves(),
-                sigma
+                sigma,
+                N_OBSERVACIONES
             )
 
         if repeticion % 10 == 0:

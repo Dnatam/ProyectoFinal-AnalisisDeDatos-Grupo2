@@ -40,13 +40,20 @@ def preparar_datos(X, y):
         "y_train": np.asarray(y_train),
         "y_test": np.asarray(y_test),
         "scaler": scaler,
-        "desviaciones_originales": np.std(X_train, axis=0, ddof=0)
+        "desviaciones_originales": np.std(X_train, axis=0, ddof=0),
+        # Indices originales de cada fila, para verificar que todos usan la misma particion
+        "indices_train": np.asarray(X_train.index),
+        "indices_test": np.asarray(X_test.index),
     }
 
 
 # CALIFORNIA HOUSING
 def cargar_california():
-    datos = fetch_california_housing(as_frame=True)
+    # data_home: guarda la descarga en data/california/ y la reutiliza despues
+    datos = fetch_california_housing(
+        data_home=str(CARPETA_DATOS / "california"),
+        as_frame=True
+    )
 
     X = datos.data
     y = datos.target
@@ -75,3 +82,49 @@ def cargar_wine():
     resultado["columnas"] = X.columns.tolist()
 
     return resultado
+
+
+# REPORTE DE LA PREPARACION (0.4)
+def tabla_desviaciones(resultado):
+    """Tabla con la desviacion estandar de cada variable antes de estandarizar (train)."""
+    return pd.DataFrame({
+        "variable": resultado["columnas"],
+        "desv_std_train": np.asarray(resultado["desviaciones_originales"], dtype=float),
+    })
+
+
+def resumen(resultado, nombre=""):
+    """Imprime tamanos, comprobaciones del escalado y desviaciones originales."""
+    print(f"=== {nombre} ===")
+    print(f"train: {resultado['X_train_std'].shape}   test: {resultado['X_test_std'].shape}")
+    print("media de X_train_std ~ 0:", np.allclose(resultado["X_train_std"].mean(axis=0), 0))
+    print("desv. de X_train_std ~ 1:", np.allclose(resultado["X_train_std"].std(axis=0), 1))
+    print("\nDesviacion estandar antes de estandarizar (train):")
+    print(tabla_desviaciones(resultado).round(4).to_string(index=False))
+    print()
+
+
+def guardar_particiones(resultado, nombre):
+    """Guarda en data/<nombre>/particiones/ las particiones crudas con su indice
+    original y la tabla de desviaciones."""
+    carpeta = CARPETA_DATOS / nombre / "particiones"
+    carpeta.mkdir(parents=True, exist_ok=True)
+
+    for parte in ("train", "test"):
+        df = pd.DataFrame(resultado[f"X_{parte}"], columns=resultado["columnas"])
+        df.insert(0, "indice_original", resultado[f"indices_{parte}"])
+        df["y"] = resultado[f"y_{parte}"]
+        df.to_csv(carpeta / f"{nombre}_{parte}.csv", index=False)
+
+    tabla_desviaciones(resultado).to_csv(carpeta / f"{nombre}_desviaciones.csv", index=False)
+
+
+if __name__ == "__main__":
+    # Ejecutar desde la raiz del repo:  python -m src.comunes.datos
+    wine = cargar_wine()
+    resumen(wine, "Wine Quality (tinto)")
+    guardar_particiones(wine, "wine")
+
+    california = cargar_california()
+    resumen(california, "California Housing")
+    guardar_particiones(california, "california")

@@ -1,0 +1,11 @@
+max_depth,fila_test,nodo,variable,valor_fila,train_abajo,train_arriba,punto_medio_exacto,en_el_punto_medio,umbral_crudo_float32,va_a_crudo,va_a_estandarizado,pred_crudo,pred_estandarizado
+6,42,87,volatile acidity,0.4,0.38,0.42,0.4,True,0.3999999910593033,derecha,izquierda,7.125,6.0
+10,42,379,volatile acidity,0.4,0.38,0.42,0.4,True,0.3999999910593033,derecha,izquierda,7.0,6.0
+10,96,308,sulphates,0.69,0.68,0.7,0.69,True,0.6899999976158142,izquierda,derecha,7.0,8.0
+10,315,252,fixed acidity,10.1,10.0,10.2,10.1,True,10.099999904632568,derecha,izquierda,5.0,6.928571428571429
+None,42,617,volatile acidity,0.4,0.38,0.42,0.4,True,0.3999999910593033,derecha,izquierda,7.0,6.0
+None,206,112,free sulfur dioxide,10.0,7.0,13.0,10.0,True,10.0,izquierda,derecha,5.0,6.0
+None,222,463,volatile acidity,0.4,0.39,0.41,0.4,True,0.3999999910593033,derecha,izquierda,7.0,6.0
+None,226,463,volatile acidity,0.4,0.39,0.41,0.4,True,0.3999999910593033,derecha,izquierda,7.0,6.0
+None,308,171,volatile acidity,0.33,0.32,0.34,0.33,True,0.32999999821186066,derecha,izquierda,6.0,5.0
+None,315,456,fixed acidity,10.1,10.0,10.2,10.1,True,10.099999904632568,derecha,izquierda,6.0,7.0

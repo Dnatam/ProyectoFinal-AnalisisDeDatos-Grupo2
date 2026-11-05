@@ -1,0 +1,6 @@
+Modelo,MSE_A_original,MAE_A_original,MSE_B_sin_gemelo,MAE_B_sin_gemelo,MSE_C_sin_duplicados,MAE_C_sin_duplicados
+OLS,0.3845,0.4696,0.412,0.4835,0.5369,0.559
+Ridge,0.384,0.4706,0.4124,0.4843,0.5267,0.5581
+k-NN,0.4263,0.5088,0.4684,0.5349,0.539,0.5757
+Árbol,0.461,0.5118,0.4996,0.53,0.5901,0.5842
+Random Forest,0.3182,0.3955,0.4093,0.4884,0.4713,0.5287

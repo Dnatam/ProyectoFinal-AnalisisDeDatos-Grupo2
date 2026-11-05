@@ -30,7 +30,9 @@ $$
 \operatorname{tr}(S)=\frac nk.
 $$
 
-Si hay filas repetidas, los empates deben manejarse de forma consistente con la autoinclusión; las predicciones de una implementación estándar pueden elegir otros índices empatados.
+**Filas repetidas.** La fórmula $\operatorname{tr}(S)=n/k$ supone que cada fila de entrenamiento es su propio vecino más cercano, así que $S_{ii}=1/k$. En Wine eso no siempre pasa: el entrenamiento tiene 303 filas con al menos un gemelo exacto (157 copias de más), y una fila está a distancia 0 tanto de sí misma como de su gemelo. Construyendo $S$ con los índices que devuelve `KNeighborsRegressor.kneighbors()` (los mismos que usa `.predict()`), con $k=1$ las 157 copias eligen a su gemelo en vez de a sí mismas, su $S_{ii}$ vale 0 y la traza es **1122 en lugar de 1279**. Con $k=2$ da 634 contra 639.5, con $k=3$ da 425.67 contra 426.33, y desde $k=5$ coincide exactamente, porque ya caben la fila y todos sus gemelos entre los vecinos.
+
+Las predicciones no cambian, porque en Wine los gemelos siempre tienen la misma nota. Eso muestra algo más fino: **con filas repetidas $S$ no es única**. Dos matrices distintas producen el mismo $\hat y$, y la traza depende de cómo se desempate. La verificación de `verificar_matrices.py` fuerza la autoinclusión y por eso coincide por construcción; la verificación real está en `src/parte3/knn_duplicados.py` y `resultados/tablas/parte3_knn_duplicados.csv`.
 
 **Árbol de regresión.** Condicionando en una partición ya construida, cada hoja con $m$ observaciones promedia sus respuestas con pesos $1/m$. La contribución de cada hoja a la traza es $m(1/m)=1$:
 

@@ -1,0 +1,76 @@
+Consulta,Idx_Test,Modelo,rango,fila_train,peso_w,y_real,alcohol,sulphates,volatile acidity,density,es_gemelo
+Nef Mediano,176,OLS,1,983,0.03974,5,9.2,0.66,0.28,1.0026,False
+Nef Mediano,176,OLS,2,712,0.03298,6,10.5,0.48,0.31,0.99677,False
+Nef Mediano,176,OLS,3,1115,0.03012,6,9.0,0.77,0.54,1.00369,False
+Nef Mediano,176,OLS,4,1150,0.03012,6,9.0,0.77,0.54,1.00369,False
+Nef Mediano,176,OLS,5,449,0.02729,5,8.8,0.75,0.5,1.00242,False
+Nef Mediano,176,Ridge,1,983,0.03642,5,9.2,0.66,0.28,1.0026,False
+Nef Mediano,176,Ridge,2,712,0.03017,6,10.5,0.48,0.31,0.99677,False
+Nef Mediano,176,Ridge,3,1115,0.02788,6,9.0,0.77,0.54,1.00369,False
+Nef Mediano,176,Ridge,4,1150,0.02788,6,9.0,0.77,0.54,1.00369,False
+Nef Mediano,176,Ridge,5,449,0.02528,5,8.8,0.75,0.5,1.00242,False
+Nef Mediano,176,k-NN,1,16,0.03448,7,10.5,0.77,0.4,0.9991,False
+Nef Mediano,176,k-NN,2,84,0.03448,5,10.5,0.83,0.45,0.9978,False
+Nef Mediano,176,k-NN,3,164,0.03448,5,10.5,0.83,0.45,0.9978,False
+Nef Mediano,176,k-NN,4,210,0.03448,7,12.0,0.66,0.35,1.0014,False
+Nef Mediano,176,k-NN,5,229,0.03448,5,10.3,0.68,0.64,0.99718,False
+Nef Mediano,176,Árbol,1,382,0.09091,5,11.0,0.58,0.37,0.99817,False
+Nef Mediano,176,Árbol,2,538,0.09091,5,11.0,0.53,0.42,0.99852,False
+Nef Mediano,176,Árbol,3,642,0.09091,5,11.0,0.57,0.73,0.9966,False
+Nef Mediano,176,Árbol,4,738,0.09091,6,10.8,0.62,0.38,0.9986,False
+Nef Mediano,176,Árbol,5,893,0.09091,7,10.8,0.63,0.39,0.9996,False
+Nef Mediano,176,Random Forest,1,382,0.07245,5,11.0,0.58,0.37,0.99817,False
+Nef Mediano,176,Random Forest,2,1222,0.07245,5,11.0,0.58,0.37,0.99817,False
+Nef Mediano,176,Random Forest,3,1096,0.03196,6,11.3,0.62,0.36,0.99568,False
+Nef Mediano,176,Random Forest,4,425,0.02792,7,12.1,0.62,0.33,0.99658,False
+Nef Mediano,176,Random Forest,5,1169,0.02133,6,10.1,0.64,0.41,0.99824,False
+Nef Mínimo,67,OLS,1,219,0.02389,5,11.1,0.74,0.645,1.00315,False
+Nef Mínimo,67,OLS,2,1165,0.02389,5,11.1,0.74,0.645,1.00315,False
+Nef Mínimo,67,OLS,3,78,0.02075,7,11.2,0.68,0.685,1.0032,False
+Nef Mínimo,67,OLS,4,605,0.02053,5,14.9,0.84,0.36,0.9976,False
+Nef Mínimo,67,OLS,5,1277,0.01884,6,12.7,0.68,0.47,1.0021,False
+Nef Mínimo,67,Ridge,1,219,0.02115,5,11.1,0.74,0.645,1.00315,False
+Nef Mínimo,67,Ridge,2,1165,0.02115,5,11.1,0.74,0.645,1.00315,False
+Nef Mínimo,67,Ridge,3,605,0.01889,5,14.9,0.84,0.36,0.9976,False
+Nef Mínimo,67,Ridge,4,78,0.01884,7,11.2,0.68,0.685,1.0032,False
+Nef Mínimo,67,Ridge,5,1277,0.01592,6,12.7,0.68,0.47,1.0021,False
+Nef Mínimo,67,k-NN,1,66,0.03448,6,11.9,0.74,0.6,1.001,False
+Nef Mínimo,67,k-NN,2,78,0.03448,7,11.2,0.68,0.685,1.0032,False
+Nef Mínimo,67,k-NN,3,101,0.03448,5,10.2,0.7,0.46,1.0006,False
+Nef Mínimo,67,k-NN,4,210,0.03448,7,12.0,0.66,0.35,1.0014,False
+Nef Mínimo,67,k-NN,5,219,0.03448,5,11.1,0.74,0.645,1.00315,False
+Nef Mínimo,67,Árbol,1,78,0.05882,7,11.2,0.68,0.685,1.0032,False
+Nef Mínimo,67,Árbol,2,107,0.05882,6,11.3,0.76,0.41,0.99939,False
+Nef Mínimo,67,Árbol,3,219,0.05882,5,11.1,0.74,0.645,1.00315,False
+Nef Mínimo,67,Árbol,4,223,0.05882,6,10.7,0.79,0.5,0.999,False
+Nef Mínimo,67,Árbol,5,258,0.05882,6,11.5,1.0,0.49,1.0008,False
+Nef Mínimo,67,Random Forest,1,219,0.38118,5,11.1,0.74,0.645,1.00315,False
+Nef Mínimo,67,Random Forest,2,1165,0.38118,5,11.1,0.74,0.645,1.00315,False
+Nef Mínimo,67,Random Forest,3,796,0.01967,5,10.8,0.71,0.45,0.99818,False
+Nef Mínimo,67,Random Forest,4,1073,0.01967,5,10.8,0.71,0.45,0.99818,False
+Nef Mínimo,67,Random Forest,5,466,0.01642,5,10.9,0.87,0.56,0.9999,False
+Interés (Máx Concentración),12,OLS,1,1000,0.00766,6,11.7,0.56,0.53,1.0002,False
+Interés (Máx Concentración),12,OLS,2,327,0.00763,7,13.0,0.6,0.37,1.0004,False
+Interés (Máx Concentración),12,OLS,3,160,-0.00739,5,9.8,1.98,0.49,0.9972,False
+Interés (Máx Concentración),12,OLS,4,1277,0.00733,6,12.7,0.68,0.47,1.0021,False
+Interés (Máx Concentración),12,OLS,5,1143,-0.00712,6,9.9,1.95,0.49,0.9972,False
+Interés (Máx Concentración),12,Ridge,1,983,0.00717,5,9.2,0.66,0.28,1.0026,False
+Interés (Máx Concentración),12,Ridge,2,160,-0.00659,5,9.8,1.98,0.49,0.9972,False
+Interés (Máx Concentración),12,Ridge,3,1143,-0.00647,6,9.9,1.95,0.49,0.9972,False
+Interés (Máx Concentración),12,Ridge,4,1204,-0.00647,6,9.9,1.95,0.49,0.9972,False
+Interés (Máx Concentración),12,Ridge,5,1277,0.00584,6,12.7,0.68,0.47,1.0021,False
+Interés (Máx Concentración),12,k-NN,1,45,0.03448,5,9.3,0.61,0.615,0.9982,False
+Interés (Máx Concentración),12,k-NN,2,50,0.03448,6,10.7,0.62,0.5,0.9985,False
+Interés (Máx Concentración),12,k-NN,3,61,0.03448,6,10.5,0.71,0.5,0.99774,False
+Interés (Máx Concentración),12,k-NN,4,75,0.03448,6,10.2,0.75,0.39,0.9984,False
+Interés (Máx Concentración),12,k-NN,5,155,0.03448,5,10.0,0.44,0.55,0.99735,False
+Interés (Máx Concentración),12,Árbol,1,50,0.1,6,10.7,0.62,0.5,0.9985,False
+Interés (Máx Concentración),12,Árbol,2,209,0.1,6,10.8,0.47,0.26,0.9949,False
+Interés (Máx Concentración),12,Árbol,3,212,0.1,5,10.8,0.62,0.62,0.997,False
+Interés (Máx Concentración),12,Árbol,4,376,0.1,6,10.6,0.6,0.46,0.9948,False
+Interés (Máx Concentración),12,Árbol,5,398,0.1,6,10.7,0.58,0.62,0.9972,False
+Interés (Máx Concentración),12,Random Forest,1,479,0.3709,6,10.7,0.52,0.5,0.9987,True
+Interés (Máx Concentración),12,Random Forest,2,1116,0.026,6,10.5,0.53,0.48,0.9982,False
+Interés (Máx Concentración),12,Random Forest,3,988,0.02064,6,10.3,0.55,0.48,0.99693,False
+Interés (Máx Concentración),12,Random Forest,4,859,0.01983,6,10.9,0.78,0.49,0.99702,False
+Interés (Máx Concentración),12,Random Forest,5,398,0.01704,6,10.7,0.58,0.62,0.9972,False

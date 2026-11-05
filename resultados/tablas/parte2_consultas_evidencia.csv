@@ -1,16 +1,16 @@
-Consulta,Idx_Test,Modelo,y_real,y_pred,N_ef,c(x)
-Nef Mediano,176,OLS,6,6.1697,41.62,0.0657
-Nef Mediano,176,Ridge,6,6.1395,50.21,0.0666
-Nef Mediano,176,k-NN,6,6.1724,29.0,0.0345
-Nef Mediano,176,Árbol,6,5.4545,11.0,0.0909
-Nef Mediano,176,Random Forest,6,5.84,51.97,0.2728
-Nef Mínimo,67,OLS,5,6.0134,41.65,0.0238
-Nef Mínimo,67,Ridge,5,5.9526,52.27,0.0234
-Nef Mínimo,67,k-NN,5,5.7931,29.0,0.0345
-Nef Mínimo,67,Árbol,5,5.5294,17.0,0.0588
-Nef Mínimo,67,Random Forest,5,4.9967,3.42,0.4965
-Interés (Máx Concentración),12,OLS,6,5.7057,202.79,0.0119
-Interés (Máx Concentración),12,Ridge,6,5.7004,281.21,0.0145
-Interés (Máx Concentración),12,k-NN,6,5.6897,29.0,0.0345
-Interés (Máx Concentración),12,Árbol,6,5.8,10.0,0.1
-Interés (Máx Concentración),12,Random Forest,6,5.8438,7.01,0.9641
+Consulta,Idx_Test,Modelo,y_real,y_pred,N_ef,c(x),suma_w,pesos_no_cero,pesos_negativos,peso_en_gemelos,tiene_gemelo
+Nef Mediano,176,OLS,6,6.1697,41.62,0.0657,1.0,1279,582,0.0,False
+Nef Mediano,176,Ridge,6,6.1395,50.21,0.0666,1.0,1279,577,0.0,False
+Nef Mediano,176,k-NN,6,6.1724,29.0,0.0345,1.0,29,0,0.0,False
+Nef Mediano,176,Árbol,6,5.4545,11.0,0.0909,1.0,11,0,0.0,False
+Nef Mediano,176,Random Forest,6,5.84,51.97,0.2728,1.0,194,0,0.0,False
+Nef Mínimo,67,OLS,5,6.0134,41.65,0.0238,1.0,1279,589,0.0,False
+Nef Mínimo,67,Ridge,5,5.9526,52.27,0.0234,1.0,1279,597,0.0,False
+Nef Mínimo,67,k-NN,5,5.7931,29.0,0.0345,1.0,29,0,0.0,False
+Nef Mínimo,67,Árbol,5,5.5294,17.0,0.0588,1.0,17,0,0.0,False
+Nef Mínimo,67,Random Forest,5,4.9967,3.42,0.4965,1.0,101,0,0.0,False
+Interés (Máx Concentración),12,OLS,6,5.7057,202.79,0.0119,1.0,1279,361,0.0049,True
+Interés (Máx Concentración),12,Ridge,6,5.7004,281.21,0.0145,1.0,1279,325,0.004,True
+Interés (Máx Concentración),12,k-NN,6,5.6897,29.0,0.0345,1.0,29,0,0.0345,True
+Interés (Máx Concentración),12,Árbol,6,5.8,10.0,0.1,1.0,10,0,0.1,True
+Interés (Máx Concentración),12,Random Forest,6,5.8438,7.01,0.9641,1.0,162,0,0.3709,True

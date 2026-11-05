@@ -1,0 +1,4 @@
+Consulta,Idx_Test,pesos_negativos,porcentaje_negativos,suma_pesos_negativos,suma_pesos_positivos,peso_mas_negativo,dist_mediana_negativos,dist_mediana_positivos,"corr(dist, |w|)"
+Nef Mediano,176,582,45.5,-1.2179,2.2179,-0.01135,6.555,5.659,-0.115
+Nef Mínimo,67,589,46.1,-1.5758,2.5758,-0.01454,7.647,6.331,-0.397
+Interés (Máx Concentración),12,361,28.2,-0.4616,1.4616,-0.00739,4.282,3.22,0.043

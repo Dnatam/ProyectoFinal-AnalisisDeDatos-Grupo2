@@ -1,0 +1,7 @@
+criterio,filas_test,detalle
+1. c(x) > 0.5,88,70% con gemelo; MAE sin gemelo 0.475
+2. gemelo en train,74,MAE con gemelo 0.087 vs sin gemelo 0.488
+2. N_ef < 82.6 (sin gemelo),198,MAE 0.526 vs 0.332 con N_ef alto
+3. leverage OLS > 0.0188,18,MAE OLS 0.626 vs 0.460
+"4. nota real 3, 4 u 8",16,MAE 1.518 vs 0.312 en notas 5-6
+4. desacuerdo entre modelos,320,"corr(rango de predicciones, error RF) = 0.007"

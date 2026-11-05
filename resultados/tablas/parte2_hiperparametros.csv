@@ -1,0 +1,6 @@
+Modelo,Hiperparámetros,MSE_CV
+OLS,ninguno,0.4407
+Ridge,alpha=100.0,0.4387
+k-NN,n_neighbors=29,0.4392
+Árbol,"max_depth=6, min_samples_leaf=10",0.4681
+Random Forest,"max_depth=None, max_features=0.33, min_samples_leaf=2",0.3574

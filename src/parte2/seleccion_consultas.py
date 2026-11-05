@@ -1,6 +1,6 @@
 from pathlib import Path
 import sys
-import joblib
+
 import numpy as np
 import pandas as pd
 
@@ -8,190 +8,121 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
+from src.parte1.pesos_bosque import pesos_bosque
 from src.parte2.modulo_evidencia import (
+    DIR_TABLAS,
+    ORDEN_MODELOS,
     calcular_concentracion,
     calcular_nef,
+    cargar_artefactos,
+    indices_gemelos,
     obtener_testigos,
+    pesos_verificados,
+    variables_importantes,
 )
 
-
-def extraer_pesos_rf(model_rf, X_train_std, x_consulta_std):
-    """Calcula los pesos w_i(x) para Random Forest (sin bootstrap)."""
-    n_train = len(X_train_std)
-    w = np.zeros(n_train)
-    n_estimators = len(model_rf.estimators_)
-
-    hojas_train = model_rf.apply(X_train_std)
-    hoja_consulta = model_rf.apply(x_consulta_std.reshape(1, -1))[0]
-
-    for t in range(n_estimators):
-        hoja_target = hoja_consulta[t]
-        mismos_nodos = hojas_train[:, t] == hoja_target
-        n_hoja = np.sum(mismos_nodos)
-
-        if n_hoja > 0:
-            w[mismos_nodos] += 1.0 / (n_estimators * n_hoja)
-
-    return w
-
-
-def extraer_pesos_knn(model_knn, X_train_std, x_consulta_std):
-    """Calcula pesos w_i(x) para k-NN (1/k en los k vecinos)."""
-    n_train = len(X_train_std)
-    w = np.zeros(n_train)
-    k = model_knn.n_neighbors
-    distances, indices = model_knn.kneighbors(x_consulta_std.reshape(1, -1))
-    w[indices[0]] = 1.0 / k
-    return w
-
-
-def extraer_pesos_arbol(model_tree, X_train_std, x_consulta_std):
-    """Calcula pesos w_i(x) para Árbol de Decisión."""
-    n_train = len(X_train_std)
-    w = np.zeros(n_train)
-
-    hojas_train = model_tree.apply(X_train_std)
-    hoja_consulta = model_tree.apply(x_consulta_std.reshape(1, -1))[0]
-
-    mismos_nodos = hojas_train == hoja_consulta
-    n_hoja = np.sum(mismos_nodos)
-
-    if n_hoja > 0:
-        w[mismos_nodos] = 1.0 / n_hoja
-    return w
-
-
-def extraer_pesos_ols(X_train_std, x_consulta_std):
-    """w(x)^T = x_tilde^T (X_tilde^T X_tilde)^(-1) X_tilde^T con columna de unos."""
-    n_train = len(X_train_std)
-    X_tilde = np.hstack([np.ones((n_train, 1)), X_train_std])
-    x_tilde = np.hstack([1.0, x_consulta_std])
-
-    inv_xtx = np.linalg.pinv(X_tilde.T @ X_tilde)
-    w = x_tilde @ inv_xtx @ X_tilde.T
-    return w
-
-
-def extraer_pesos_ridge(model_ridge, X_train_std, x_consulta_std):
-    """w(x)^T = 1/n * 1^T + x^T (X_std^T X_std + lambda I)^(-1) X_std^T."""
-    n_train = len(X_train_std)
-    lam = model_ridge.alpha
-
-    inv_term = np.linalg.pinv(
-        X_train_std.T @ X_train_std + lam * np.eye(X_train_std.shape[1])
-    )
-    w_centered = x_consulta_std @ inv_term @ X_train_std.T
-    w = (1.0 / n_train) + w_centered
-    return w
+N_TESTIGOS = 5
+N_VARIABLES = 4
 
 
 def ejecutar_seleccion_consultas():
-    print("==================================================")
-    print(" 2.1 Selección de Consultas y Ficha de Evidencia")
-    print("==================================================")
+    print("2.1 Selección de consultas y ficha de evidencia\n")
 
-    ruta_modelos = ROOT_DIR / "resultados" / "modelos_entrenados.joblib"
-    if not ruta_modelos.exists():
-        raise FileNotFoundError(
-            "Primero ejecuta cv_modelos.py para generar los modelos."
-        )
-
-    artefactos = joblib.load(ruta_modelos)
-    modelos = artefactos["modelos"]
-    datos = artefactos["datos"]
-
-    X_train_std = datos["X_train_std"]
-    X_test_std = datos["X_test_std"]
-    y_train = datos["y_train"]
-    y_test = datos["y_test"]
+    modelos, datos = cargar_artefactos()
+    X_train_std, X_test_std = datos["X_train_std"], datos["X_test_std"]
+    y_train, y_test = datos["y_train"], datos["y_test"]
     columnas = datos["columnas"]
 
-    X_train_df = pd.DataFrame(X_train_std, columns=columnas)
+    # Train en unidades originales (para que los testigos se puedan leer)
+    X_train_orig = pd.DataFrame(datos["X_train"], columns=columnas)
+    X_test_orig = pd.DataFrame(datos["X_test"], columns=columnas)
 
-    # 1. Calcular N_ef de Random Forest en el conjunto de prueba
+    # 1. N_ef y c(x) del bosque en todo el conjunto de prueba
     rf = modelos["Random Forest"]
-    n_test = len(X_test_std)
-    nef_rf_list = []
-    pesos_rf_test = []
+    W_rf = pesos_bosque(rf, X_train_std, X_test_std)          # (n_test, n_train)
+    diferencia = np.max(np.abs(W_rf @ y_train - rf.predict(X_test_std)))
+    assert diferencia < 1e-8, f"Los pesos del bosque no reproducen .predict(): {diferencia:.2e}"
+    print(f"Pesos del bosque verificados en las {len(X_test_std)} filas de prueba "
+          f"(máx |w·y - pred| = {diferencia:.1e})")
 
-    print("--> Calculando N_ef (Random Forest) en todo el conjunto de prueba...")
-    for idx in range(n_test):
-        w_rf = extraer_pesos_rf(rf, X_train_std, X_test_std[idx])
-        pesos_rf_test.append(w_rf)
-        nef_rf_list.append(calcular_nef(w_rf))
+    nef_rf = np.array([calcular_nef(w) for w in W_rf])
+    conc_rf = np.array([calcular_concentracion(w) for w in W_rf])
 
-    nef_rf = np.array(nef_rf_list)
-
-    # 2. Selección de las 3 consultas
-    idx_mediano = int(np.argsort(nef_rf)[len(nef_rf) // 2])
+    # 2. Las tres consultas
+    idx_mediano = int(np.argsort(nef_rf, kind="stable")[len(nef_rf) // 2])
     idx_minimo = int(np.argmin(nef_rf))
-    conc_rf_list = [calcular_concentracion(w) for w in pesos_rf_test]
-    idx_interes = int(np.argmax(conc_rf_list))
-
+    idx_interes = int(np.argmax(conc_rf))  # la de mayor concentración c(x)
     consultas = {
         "Nef Mediano": idx_mediano,
         "Nef Mínimo": idx_minimo,
         "Interés (Máx Concentración)": idx_interes,
     }
 
-    print("\n--- Consultas Seleccionadas ---")
+    variables_clave = variables_importantes(rf, columnas, n=N_VARIABLES)
+    print(f"Variables más importantes del bosque: {variables_clave}\n")
+
+    print("--- Consultas seleccionadas ---")
     for nombre, idx in consultas.items():
-        print(
-            f"• {nombre}: Índice Test = {idx} | N_ef RF = {nef_rf[idx]:.2f} | y_real = {y_test[idx]}"
-        )
+        gemelos = indices_gemelos(X_test_std[idx], X_train_std)
+        texto_gemelo = (f"SÍ, filas de train {gemelos.tolist()} con y = {y_train[gemelos].tolist()}"
+                        if len(gemelos) else "no")
+        print(f"• {nombre}: fila de prueba {idx} | N_ef RF = {nef_rf[idx]:.2f} | "
+              f"c(x) RF = {conc_rf[idx]:.4f} | y real = {y_test[idx]} | gemelo en train: {texto_gemelo}")
+        print("  Valores de la consulta:",
+              X_test_orig.loc[idx, variables_clave].round(3).to_dict())
 
-    # 3. Ficha de Evidencia
-    resumen_filas = []
-    variables_clave = ["alcohol", "volatile acidity", "sulphates", "citric acid"]
-
+    # 3. Ficha de evidencia para cada consulta y cada modelo
+    resumen, testigos = [], []
     for nombre_c, idx_c in consultas.items():
-        x_c_std = X_test_std[idx_c]
-        y_c_real = y_test[idx_c]
+        x_c = X_test_std[idx_c]
+        gemelos = indices_gemelos(x_c, X_train_std)
 
-        for nombre_m, model in modelos.items():
-            if nombre_m == "OLS":
-                w = extraer_pesos_ols(X_train_std, x_c_std)
-            elif nombre_m == "Ridge":
-                w = extraer_pesos_ridge(model, X_train_std, x_c_std)
-            elif nombre_m == "k-NN":
-                w = extraer_pesos_knn(model, X_train_std, x_c_std)
-            elif nombre_m == "Árbol":
-                w = extraer_pesos_arbol(model, X_train_std, x_c_std)
-            elif nombre_m == "Random Forest":
-                w = pesos_rf_test[idx_c]
+        for nombre_m in ORDEN_MODELOS:
+            w, pred = pesos_verificados(nombre_m, modelos[nombre_m], X_train_std, y_train, x_c)
 
-            y_pred = float(np.sum(w * y_train))
-            nef = calcular_nef(w)
-            conc = calcular_concentracion(w)
+            resumen.append({
+                "Consulta": nombre_c,
+                "Idx_Test": idx_c,
+                "Modelo": nombre_m,
+                "y_real": y_test[idx_c],
+                "y_pred": round(pred, 4),
+                "N_ef": round(calcular_nef(w), 2),
+                "c(x)": round(calcular_concentracion(w), 4),
+                "suma_w": round(float(w.sum()), 6),
+                "pesos_no_cero": int(np.sum(np.abs(w) > 1e-12)),
+                "pesos_negativos": int(np.sum(w < -1e-12)),
+                "peso_en_gemelos": round(float(w[gemelos].sum()), 4) if len(gemelos) else 0.0,
+                "tiene_gemelo": len(gemelos) > 0,
+            })
 
-            obtener_testigos(
-                w, X_train_df, pd.Series(y_train), top_n=5, variables_clave=variables_clave
-            )
+            t = obtener_testigos(w, X_train_orig, y_train, top_n=N_TESTIGOS,
+                                 variables_clave=variables_clave)
+            t["es_gemelo"] = t["fila_train"].isin(gemelos)
+            t.insert(0, "Consulta", nombre_c)
+            t.insert(1, "Idx_Test", idx_c)
+            t.insert(2, "Modelo", nombre_m)
+            testigos.append(t)
 
-            resumen_filas.append(
-                {
-                    "Consulta": nombre_c,
-                    "Idx_Test": idx_c,
-                    "Modelo": nombre_m,
-                    "y_real": y_c_real,
-                    "y_pred": round(y_pred, 4),
-                    "N_ef": round(nef, 2),
-                    "c(x)": round(conc, 4),
-                }
-            )
+    df_resumen = pd.DataFrame(resumen)
+    df_testigos = pd.concat(testigos, ignore_index=True)
+    df_testigos["peso_w"] = df_testigos["peso_w"].round(5)
 
-    df_resumen = pd.DataFrame(resumen_filas)
+    # 4. Guardar
+    DIR_TABLAS.mkdir(parents=True, exist_ok=True)
+    ruta_resumen = DIR_TABLAS / "parte2_consultas_evidencia.csv"
+    ruta_testigos = DIR_TABLAS / "parte2_testigos.csv"
+    df_resumen.to_csv(ruta_resumen, index=False)
+    df_testigos.to_csv(ruta_testigos, index=False)
 
-    # Guardar en CSV
-    dir_tablas = ROOT_DIR / "resultados" / "tablas"
-    dir_tablas.mkdir(parents=True, exist_ok=True)
-    ruta_csv = dir_tablas / "parte2_consultas_evidencia.csv"
-    df_resumen.to_csv(ruta_csv, index=False)
-
-    print(f"\n✅ Tabla guardada en: {ruta_csv}\n")
+    print("\n--- Resumen por consulta y modelo ---")
     print(df_resumen.to_string(index=False))
+    print("\n--- Testigos (5 filas de train con mayor |w|, unidades originales) ---")
+    for (nombre_c, nombre_m), t in df_testigos.groupby(["Consulta", "Modelo"], sort=False):
+        print(f"\n{nombre_c} — {nombre_m}")
+        print(t.drop(columns=["Consulta", "Idx_Test", "Modelo"]).to_string(index=False))
 
-    return df_resumen
+    print(f"\nTablas guardadas en:\n  {ruta_resumen}\n  {ruta_testigos}")
+    return df_resumen, df_testigos
 
 
 if __name__ == "__main__":
